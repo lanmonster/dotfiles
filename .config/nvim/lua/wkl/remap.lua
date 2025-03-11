@@ -1,0 +1,13 @@
+vim.g.mapleader = " "
+vim.keymap.set("n", "-", "<cmd>Oil<CR>")
+vim.keymap.set("n", "<leader>ex", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<leader>mp", vim.cmd.Glow)
+vim.keymap.set("n", "<leader>qp", function()
+	vim.diagnostic.setqflist({ bufnr = 0 })
+end)
+vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
+vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>")
+vim.keymap.set("n", "<M-b>", "<cmd>cclose<CR>")
+vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")

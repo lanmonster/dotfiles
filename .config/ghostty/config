@@ -1,0 +1,8 @@
+font-family = FiraCode
+theme = GruvboxDark
+window-decoration = none
+clipboard-read = allow
+clipboard-write = allow
+cursor-style = block
+cursor-color = #E5D5AE
+
