@@ -8,6 +8,7 @@ import XMonad.Layout.Spacing
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 import XMonad.Hooks.DynamicLog
+import XMonad.Actions.SpawnOn
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -232,7 +233,7 @@ myManageHook = manageSpawn <+> composeAll
     [ className  =? "MPlayer"        --> doFloat
     , windowRole =? "Dialog"         --> floatMsgcompose
     , appName    =? "Msgcompose"     --> floatMsgcompose
-    , className  =? "Droidcam"       --> doSink
+    --, className  =? "Droidcam"       --> doSink
     , resource   =? "desktop_window" --> doIgnore
     , resource   =? "kdesktop"       --> doIgnore ]
 
@@ -271,16 +272,18 @@ myEventHook = mempty
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = do 
-    spawnOnce "nitrogen --restore &"
-    spawnOnce "picom &"
-    spawnOnOnce (myWorkspaces!!0) "thunderbird"
-    spawnOnOnce (myWorkspaces!!0) (myTerminal ++ " -e calcurse")
-    spawnOnOnce (myWorkspaces!!0) "discord"
-    spawnOnOnce (myWorkspaces!!1) myTerminal
-    spawnOnOnce (myWorkspaces!!2) myBrowser
-    spawnOnOnce (myWorkspaces!!8) "droidcam"
-    spawnOnOnce (myWorkspaces!!8) "blueman-manager"
+myStartupHook = mempty
+
+-- do 
+--     spawnOnce "nitrogen --restore &"
+--     spawnOnce "picom &"
+--     spawnOnOnce (myWorkspaces!!0) "thunderbird"
+--     spawnOnOnce (myWorkspaces!!0) (myTerminal ++ " -e calcurse")
+--     spawnOnOnce (myWorkspaces!!0) "discord"
+--     spawnOnOnce (myWorkspaces!!1) myTerminal
+--     spawnOnOnce (myWorkspaces!!2) myBrowser
+--     spawnOnOnce (myWorkspaces!!8) "droidcam"
+--     spawnOnOnce (myWorkspaces!!8) "blueman-manager"
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
