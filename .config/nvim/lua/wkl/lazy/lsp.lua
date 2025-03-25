@@ -53,6 +53,31 @@ return {
 						single_file_support = false, -- must set to false
 					})
 				end,
+				["ruff"] = function()
+					print("configuring ruff")
+					local lspconfig = require("lspconfig")
+					lspconfig.ruff.setup({
+						init_options = {
+							settings = {
+								configurationPreference = "filesystemFirst",
+								configuration = "/home/wkl/code/Anvil/ruff.toml",
+								lineLength = 120,
+							},
+						},
+					})
+				end,
+				["pylsp"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.pylsp.setup({
+						settings = {
+							pylsp = {
+								plugins = {
+									pycodestyle = { enabled = false },
+								},
+							},
+						},
+					})
+				end,
 			},
 		})
 

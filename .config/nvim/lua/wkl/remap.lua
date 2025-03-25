@@ -11,3 +11,19 @@ vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>")
 vim.keymap.set("n", "<M-b>", "<cmd>cclose<CR>")
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
+local is_diff_open = false
+vim.keymap.set("n", "<leader>dv", function()
+	if is_diff_open then
+		vim.cmd.DiffviewClose()
+	else
+		vim.cmd.DiffviewOpen()
+	end
+	is_diff_open = not is_diff_open
+end)
+vim.api.nvim_create_user_command("Q", function(opts)
+	if opts.bang then
+		vim.cmd("qa!")
+	else
+		vim.cmd.qa()
+	end
+end, { bang = true })

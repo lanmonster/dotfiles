@@ -99,12 +99,13 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-eval $(thefuck --alias)
 export EDITOR=nvim
 alias vim=nvim
+alias sudo="sudo "
+alias sudp="sudo "
 export SERENITY_SOURCE_DIR=/home/wkl/dev/serenity
 export GOPATH="/home/wkl/go/"
-export PATH="/home/wkl/dev/jakt/build/bin:$PATH:/usr/local/go/bin:/home/wkl/Android/Sdk/platform-tools:$GOPATH/bin"
+export PATH="/home/wkl/dev/jakt/build/bin:$PATH:/usr/local/go/bin:/home/wkl/Android/Sdk/platform-tools:$GOPATH/bin:/home/wkl/.local/bin:/home/wkl/.local/share/nvim/mason/bin"
 
 fixme () {
 	grep --exclude-dir=Build/ -r -n -H "// FIXME" $1 | shuf | head -n 1 | sed "s#^#file://${SERENITY_SOURCE_DIR}/#"
@@ -113,5 +114,9 @@ fixme () {
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+eval $(thefuck --alias)
+
 
 [ -f "/home/wkl/.ghcup/env" ] && . "/home/wkl/.ghcup/env" # ghcup-env

@@ -5,4 +5,4 @@ clipboard-read = allow
 clipboard-write = allow
 cursor-style = block
 cursor-color = #E5D5AE
-
+background-opacity = 0.85

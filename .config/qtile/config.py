@@ -24,7 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, qtile, widget
+import os
+import subprocess
+
+from libqtile import bar, hook, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
@@ -43,14 +46,15 @@ keys = [
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key(
-        [mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"
+        [mod, "shift"],
+        "h",
+        lazy.layout.shuffle_left(),
+        desc="Move window to the left",
     ),
     Key(
         [mod, "shift"],
         "l",
-        lazy.spawn(
-            'slock -m "$(cowsay -f $(ls /usr/share/cowsay/cows | shuf -n 1) "$(fortune)")"'
-        ),
+        lazy.spawn("/home/wkl/scripts/lock.sh"),
         desc="lock screen",
     ),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
@@ -59,7 +63,10 @@ keys = [
     # will be to screen edge - window would shrink.
     Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
     Key(
-        [mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"
+        [mod, "control"],
+        "l",
+        lazy.layout.grow_right(),
+        desc="Grow window to the right",
     ),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
@@ -94,28 +101,48 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "p", lazy.spawn("rofi -show run"), desc="launch rofi"),
     Key(
+        [mod],
+        "c",
+        lazy.spawn("rofi -show calc -modi calc -no-show-match -no-sort"),
+        desc="launch rofi calculator",
+    ),
+    Key(
         [mod, "shift"],
         "p",
         lazy.spawn("rofi -show power-menu -modi power-menu:rofi-power-menu"),
         desc="launch rofi",
+    ),
+    Key(
+        ["control", "shift"],
+        "4",
+        lazy.spawn(["scrot", "-s", "/home/wkl/screenshots/%F_%H%M%S.png"]),
+        desc="take a screenshot",
+    ),
+    Key(
+        [mod, "control", "shift"],
+        "4",
+        lazy.spawn(["/home/wkl/scripts/scrot-clipboard.sh"]),
+        desc="take a screenshot and copy to clipboard",
     ),
 ]
 
 # Add key bindings to switch VTs in Wayland.
 # We can't check qtile.core.name in default config as it is loaded before qtile is started
 # We therefore defer the check until the key binding is run by using .when(func=...)
-for vt in range(1, 8):
-    keys.append(
+keys.extend(
+    [
         Key(
             ["control", "mod1"],
             f"f{vt}",
             lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
             desc=f"Switch to VT{vt}",
         )
-    )
+        for vt in range(1, 8)
+    ],
+)
 
-names = ["\uf073", "\uf121", "\uf0ac", "\uf1e8", "5", "6", "7", "8", "\uf7d9"]
-groups = [Group(i) for i in names]
+names = ["", "\uf121", "\uf0ac", "\uf1e8", "5", "6", "7", "8", "\uf7d9"]
+groups = [Group(str(i + 1), label=label) for i, label in enumerate(names)]
 
 for i in groups:
     keys.extend(
@@ -138,7 +165,7 @@ for i in groups:
             # # mod + shift + group number = move focused window to group
             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
             #     desc="move focused window to group {}".format(i.name)),
-        ]
+        ],
     )
 
 layouts = [
@@ -163,31 +190,25 @@ layouts = [
     # layout.Zoomy(),
 ]
 
-widget_defaults = dict(
-    font="sans",
-    fontsize=12,
-    padding=3,
-)
+widget_defaults = {
+    "font": "FiraCode",
+    "fontsize": 12,
+    "padding": 3,
+}
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayout(),
                 widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
+                widget.Spacer(),
                 widget.Systray(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.QuickExit(),
@@ -196,12 +217,21 @@ screens = [
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
+        wallpaper="/home/wkl/Pictures/bg.jpg",
+        wallpaper_mode="fill",
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
         # x11_drag_polling_rate = 60,
     ),
 ]
+
+
+@hook.subscribe.startup
+def autostart():
+    home = os.path.expanduser("~/.config/qtile/scripts/autostart.sh")
+    subprocess.call([home])
+
 
 # Drag floating layouts.
 mouse = [
@@ -212,7 +242,10 @@ mouse = [
         start=lazy.window.get_position(),
     ),
     Drag(
-        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+        [mod],
+        "Button3",
+        lazy.window.set_size_floating(),
+        start=lazy.window.get_size(),
     ),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
@@ -233,7 +266,7 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
-    ]
+    ],
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"
