@@ -20,3 +20,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80"
 
 vim.opt.updatetime = 50
+
+vim.opt.foldcolumn = "1"
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 20
