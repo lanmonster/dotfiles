@@ -27,3 +27,6 @@ vim.api.nvim_create_user_command("Q", function(opts)
 		vim.cmd.qa()
 	end
 end, { bang = true })
+vim.keymap.set("n", "<leader>f", function()
+	require("pear").jump_pair()
+end, { silent = true })

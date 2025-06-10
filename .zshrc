@@ -105,7 +105,7 @@ alias sudo="sudo "
 alias sudp="sudo "
 export SERENITY_SOURCE_DIR=/home/wkl/dev/serenity
 export GOPATH="/home/wkl/go/"
-export PATH="/usr/lib/ccache:/home/wkl/dev/jakt/build/bin:$PATH:/usr/local/go/bin:/home/wkl/Android/Sdk/platform-tools:$GOPATH/bin:/home/wkl/.local/bin:/home/wkl/.local/share/nvim/mason/bin"
+export PATH="/usr/lib/ccache:/home/wkl/dev/jakt/build/bin:$PATH:/usr/local/go/bin:/home/wkl/Android/Sdk/platform-tools:$GOPATH/bin:/home/wkl/.local/bin:/home/wkl/.local/share/nvim/mason/bin:/home/wkl/scripts"
 
 fixme () {
 	grep --exclude-dir=Build/ -r -n -H "// FIXME" $1 | shuf | head -n 1 | sed "s#^#file://${SERENITY_SOURCE_DIR}/#"

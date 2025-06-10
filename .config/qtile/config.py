@@ -211,6 +211,13 @@ screens = [
                 widget.Spacer(),
                 widget.Systray(),
                 widget.Clock(format="%Y-%m-%d %a %H:%M"),
+                widget.Battery(
+                    show_short_text=False,
+                    charge_char="+",
+                    discharge_char="",
+                    format="{char}{percent:2.0%}",
+                ),
+                widget.BatteryIcon(),
                 widget.QuickExit(),
             ],
             24,

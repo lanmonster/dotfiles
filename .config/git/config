@@ -1,0 +1,27 @@
+[user]
+	email = kyle@modernintelligence.ai
+	name = Kyle Lanmon
+[alias]
+	st = status
+	co = checkout
+[pull]
+	rebase = true
+[log]
+    abbrevCommit = true
+    graphColors = blue,yellow,cyan,magenta,green,red
+[format]
+    pretty = "format:%C(yellow)%h %C(green)%an %C(blue)%ar %C(red)%d%Creset%n%s%n"
+[status]
+    branch = true
+    short = true
+    showUntrackedFiles = all
+[pager]
+    diff = diff-so-fancy | $PAGER
+[push]
+    autoSetupRemote = true
+    default = current
+[rebase]
+    autoStash = true
+[interactive]
+	diffFilter = diff-so-fancy --patch
+    singlekey = true
